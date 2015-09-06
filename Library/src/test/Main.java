@@ -9,11 +9,12 @@ import yegorov.math.Complex;
 public class Main {
     public static void main(String[] args) {
 
-        Complex c = Complex.fromCanonical(3, -4); //Complex.fromPolar(5, Math.toRadians());
+        Complex c = Complex.fromCanonical(2, -70); //Complex.fromPolar(5, Math.toRadians());
 
-        c.add(Complex.fromCanonical(-3, 4));
+        c.add(Complex.fromCanonical(3, -10));
 
-        System.out.println(Complex.add(Complex.fromCanonical(4, 2), Complex.fromCanonical(2, 1)).toCanonicalForm());
+
+        System.out.println(Complex.add(Complex.fromCanonical(4, 2), Complex.fromCanonical(2, 1)).toPolarForm());
 
         /*
         System.out.println(c.toCanonicalForm());

@@ -10,8 +10,8 @@ public class Complex extends Number {
 
 
     public Complex() {
-        this.real = 0;
-        this.imag = 0;
+        this.real = 0d;
+        this.imag = 0d;
     }
 
 
@@ -168,27 +168,44 @@ public class Complex extends Number {
     */
     public double getArg() {
         // https://en.wikipedia.org/wiki/Complex_number#Polar_form
-        return Math.atan(imag / real);
+        double arcTan = Math.atan(imag / real); //Math.atan2(imag, real);
+        double result;
+
+        if(real > 0)
+            result = arcTan;
+        else if(real < 0 && imag >= 0)
+            result = arcTan + Math.PI;
+        else if(real < 0 && imag < 0)
+            result = arcTan - Math.PI;
+        else if(real == 0 && imag > 0)
+            result = Math.PI / 2.0;
+        else if(real == 0 && imag < 0)
+            result = -Math.PI / 2.0;
+        else
+            result = Double.NaN;
+        return result;
+
     }
+
 
     /*
     * @return String canonical form, example: 6,00 + i*3,00
     */
     public String toCanonicalForm() {
-        return String.format("%.2f %c i*%.2f", real, imag >= 0 ? '+' : '-', Math.abs(imag));
+        return String.format("%.5f %c i*%.5f", real, imag >= 0 ? '+' : '-', Math.abs(imag));
     }
 
     /*
-    * @return String polar (trigonometric) form, example: 2(cos(0,52) + i*sin(0,52))
+    * @return String polar (trigonometric) form, example:  2*(cos(0,52) + i*sin(0,52))
     */
     public String toPolarForm() {
         double arg = getArg();
-        double sinFi = Math.sin(arg);
+        //double sinFi = Math.sin(arg);
 
-        return String.format("%.2f(cos(%.2f) %c i*sin(%.2f))",
+        return String.format("%.5f*(cos(%.5f) %c i*sin(%.5f))",
                 getModule(),
                 arg,
-                sinFi >= 0 ? '+' : '-',
+                '+', //sinFi >= 0 ? '+' : '-',
                 arg);
     }
 
@@ -196,7 +213,7 @@ public class Complex extends Number {
     * @return String exponent form, example: 2,00*e^(i*0,53)
     */
     public String toExponentForm() {
-        return String.format("%.2f*e^(i*%.2f)", getModule(), getArg());
+        return String.format("%.5f*e^(i*%.5f)", getModule(), getArg());
     }
 
     @Override
