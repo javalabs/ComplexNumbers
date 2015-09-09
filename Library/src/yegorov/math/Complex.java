@@ -200,7 +200,6 @@ public class Complex extends Number {
     */
     public String toPolarForm() {
         double arg = getArg();
-        //double sinFi = Math.sin(arg);
 
         return String.format("%.5f*(cos(%.5f) %c i*sin(%.5f))",
                 getModule(),
