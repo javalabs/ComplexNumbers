@@ -4,18 +4,28 @@ package yegorov.math;
  * Created by Yegorov Artem <yegorov0725@yandex.ru>
  */
 public class Complex extends Number {
+    public enum Presentation {
+        Canonical,
+        Polar,
+        Exponent
+    }
+
+    public enum AngleUnit {
+        Degree,
+        Radian,
+        Grad
+    }
 
     private double real;
     private double imag;
 
 
-    public Complex() {
+    private Complex() {
         this.real = 0d;
         this.imag = 0d;
     }
 
-
-    public Complex(double real, double imag) {
+    private Complex(double real, double imag) {
         this.real = real;
         this.imag = imag;
     }
@@ -81,30 +91,58 @@ public class Complex extends Number {
     }
 
 
+    /**
+     * Addition operations (not mutable input parameters)
+     * @param z1 - First complex number
+     * @param z2 - Second complex number
+     * @return New complex number with with the result of the operation
+     */
     public static Complex add(Complex z1, Complex z2) {
         return Complex.instanseOf(z1).add(z2);
     }
 
+    /**
+     * Subtraction operations (not mutable input parameters)
+     * @param z1 - First complex number
+     * @param z2 - Second complex number
+     * @return New complex number with with the result of the operation
+     */
     public static Complex sub(Complex z1, Complex z2) {
         return Complex.instanseOf(z1).sub(z2);
     }
 
+    /**
+     * Multiplication operations (not mutable input parameters)
+     * @param z1 - First complex number
+     * @param z2 - Second complex number
+     * @return New complex number with with the result of the operation
+     */
     public static Complex mul(Complex z1, Complex z2) {
         return Complex.instanseOf(z1).mul(z2);
     }
 
+    /**
+     * Division operations (not mutable input parameters)
+     * @param z1 - First complex number
+     * @param z2 - Second complex number
+     * @return New complex number with with the result of the operation
+     */
     public static Complex div(Complex z1, Complex z2) {
         return Complex.instanseOf(z1).div(z2);
     }
 
 
-
+    /**
+     * Copy the input object
+     * @param z - Complex number
+     * @return New complex number
+     */
     public static Complex instanseOf(Complex z) {
         return new Complex(z.getReal(), z.getImag());
     }
 
     /**
-     * @param real Real part of the complex number
+     * @param real - Real part of the complex number
      * @param imag - Imaginary part of the complex number
      * @return New complex number
      */
@@ -113,7 +151,7 @@ public class Complex extends Number {
     }
 
     /**
-     * @param module Absolute value (or modulus or magnitude) of a complex number sqrt(real^2 + imag^2)
+     * @param module - Absolute value (or modulus or magnitude) of a complex number sqrt(real^2 + imag^2)
      * @param arg - The argument of z (in many applications referred to as the "phase") is the angle of the radius OP
      *              with the positive real axis,
      * @return New complex number
@@ -141,34 +179,53 @@ public class Complex extends Number {
         return c;
     }
 
-    /*
-    * Real part of the complex number
-    */
+    /**
+     * @param x - Real part if Presentation Canonical, else absolute value (or modulus or magnitude)
+     * @param y - Imaginary part if Presentation Canonical, else the argument of complex number
+     * @param p - Presentation of complex number (Canincal, Polar, Exponent)
+     * @return New complex number
+     */
+    public static Complex CreateComplex(double x, double y, Presentation p) {
+        switch (p) {
+            case Canonical:
+                return fromCanonical(x, y);
+            case Polar:
+                return fromPolar(x, y);
+            case Exponent:
+                return fromExponent(x, y);
+            default:
+                return new Complex();
+        }
+    }
+
+    /**
+     * Real part of the complex number
+     */
     public double getReal() {
         return real;
     }
 
-    /*
-    * Imaginary part of the complex number
-    */
+    /**
+     * Imaginary part of the complex number
+     */
     public double getImag() {
         return imag;
     }
 
-    /*
-    * Absolute value (module) of the complex number (sqrt(real^2 + imag^2))
-    */
+    /**
+     * Absolute value (module) of the complex number (sqrt(real^2 + imag^2))
+     */
     public double getModule() {
         return Math.sqrt(real * real + imag * imag);
     }
 
-    /*
-    * Argument is a function operating on complex numbers.
-    * It gives the angle between the positive real axis to the line joining the point to the origin
-    */
+    /**
+     * Argument is a function operating on complex numbers.
+     * It gives the angle between the positive real axis to the line joining the point to the origin
+     */
     public double getArg() {
         // https://en.wikipedia.org/wiki/Complex_number#Polar_form
-        double arcTan = Math.atan(imag / real); //Math.atan2(imag, real);
+        double arcTan = Math.atan(imag / real); // Math.atan2(imag, real);
         double result;
 
         if(real > 0)
@@ -184,43 +241,65 @@ public class Complex extends Number {
         else
             result = Double.NaN;
         return result;
-
     }
 
 
-    /*
-    * @return String canonical form, example: 6,00 + i*3,00
-    */
+    /**
+     * Present a complex number in canonical form
+     * @return String canonical form, example: 6,00 + i*3,00
+     */
     public String toCanonicalForm() {
         return String.format("%.5f %c i*%.5f", real, imag >= 0 ? '+' : '-', Math.abs(imag));
     }
 
-    /*
-    * @return String polar (trigonometric) form, example:  2*(cos(0,52) + i*sin(0,52))
-    */
-    public String toPolarForm() {
-        double arg = getArg();
+    /**
+     * Convert radian to chosen angle unit.
+     * @return Value angle in chosen unit
+     */
+    private double conversionAngle(AngleUnit angleUnit, double radians) {
+        switch (angleUnit) {
+            case Degree:
+                return Math.toDegrees(radians);
+            case Radian:
+                return radians;
+            case Grad:
+                return radians * (200d / Math.PI);
+            default:
+                return Double.NaN;
+        }
+    }
+
+
+    /**
+     * Present a complex number in polar form
+     * @param angleUnit - The unit of measurement of the angle at which you want to represent the number
+     * @return String polar (trigonometric) form, example:  2*(cos(0,52) + i*sin(0,52))
+     */
+    public String toPolarForm(AngleUnit angleUnit) {
+        double arg = conversionAngle(angleUnit, getArg());
 
         return String.format("%.5f*(cos(%.5f) %c i*sin(%.5f))",
                 getModule(),
                 arg,
-                '+', //sinFi >= 0 ? '+' : '-',
+                '+',
                 arg);
     }
 
-    /*
-    * @return String exponent form, example: 2,00*e^(i*0,53)
-    */
-    public String toExponentForm() {
-        return String.format("%.5f*e^(i*%.5f)", getModule(), getArg());
+    /**
+     * Present a complex number in exponent form
+     * @param angleUnit - The unit of measurement of the angle at which you want to represent the number
+     * @return String exponent form, example: 2,00*e^(i*0,53)
+     */
+    public String toExponentForm(AngleUnit angleUnit) {
+        double arg = conversionAngle(angleUnit, getArg());
+
+        return String.format("%.5f*e^(i*%.5f)", getModule(), arg);
     }
 
     @Override
     public String toString() {
         return String.format("Complex{real=%f, imag=%f}", real, imag);
     }
-
-
 
     @Override
     public int intValue() {

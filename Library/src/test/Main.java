@@ -1,6 +1,5 @@
 package test;
 
-
 import yegorov.math.Complex;
 
 /**
@@ -17,9 +16,19 @@ public class Main {
         Complex z = Complex.mul(c, Complex.fromExponent(5, Math.PI));
 
         System.out.println(c.toCanonicalForm());
-        System.out.println(z.toPolarForm());
-        System.out.println(c2.toExponentForm());
+        System.out.println(z.toPolarForm(Complex.AngleUnit.Degree));
+        System.out.println(c2.toExponentForm(Complex.AngleUnit.Degree));
 
+
+        Complex b = Complex.fromCanonical(3.535533, 3.535533);
+        Complex a = Complex.CreateComplex(5, Math.toRadians(45), Complex.Presentation.Polar);
+
+        System.out.println("---------------------------------");
+        System.out.println(b.toCanonicalForm());
+        System.out.println(b.toPolarForm(Complex.AngleUnit.Degree));
+
+        System.out.println(a.toCanonicalForm());
+        System.out.println(a.toPolarForm(Complex.AngleUnit.Degree));
 
     }
 }
