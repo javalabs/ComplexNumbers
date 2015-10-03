@@ -20,14 +20,14 @@ public class Main {
         System.out.println(c2.toExponentForm(Complex.AngleUnit.Degree));
 
 
-        Complex b = Complex.fromCanonical(3.535533, 3.535533);
-        Complex a = Complex.CreateComplex(5, Math.toRadians(45), Complex.Presentation.Polar);
+        Complex b = Complex.fromCanonical(4, 0);
+        Complex a = Complex.CreateComplex(0, Math.toRadians(0), Complex.Presentation.Polar);
 
         System.out.println("---------------------------------");
         System.out.println(b.toCanonicalForm());
         System.out.println(b.toPolarForm(Complex.AngleUnit.Degree));
 
-        System.out.println(a.toCanonicalForm());
+        System.out.println("a = " + a.toCanonicalForm());
         System.out.println(a.toPolarForm(Complex.AngleUnit.Degree));
 
     }

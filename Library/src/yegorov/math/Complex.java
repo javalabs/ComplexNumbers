@@ -157,11 +157,10 @@ public class Complex extends Number {
      * @return New complex number
      */
     public static Complex fromPolar(double module, double arg) {
+        // http://h4e.ru/obshchie-svedeniya/145-primery-reshenij-kompleksnykh-chisel-kalkulyator
 
-        double tanArg = Math.tan(arg);
-
-        double real = Math.sqrt((tanArg * tanArg * module * module) / (1 + tanArg * tanArg));
-        double imag = real / tanArg;
+        double real = module * Math.cos(arg);
+        double imag = module * Math.sin(arg);
 
         return new Complex(real, imag);
     }
