@@ -5,15 +5,15 @@ package yegorov.math;
  */
 public class Complex extends Number {
     public enum Presentation {
-        Canonical,
-        Polar,
-        Exponent
+        CANONICAL,
+        POLAR,
+        EXPONENT
     }
 
     public enum AngleUnit {
-        Degree,
-        Radian,
-        Grad
+        DEGREE,
+        RADIAN,
+        GRAD
     }
 
     private double real;
@@ -179,18 +179,18 @@ public class Complex extends Number {
     }
 
     /**
-     * @param x - Real part if Presentation Canonical, else absolute value (or modulus or magnitude)
-     * @param y - Imaginary part if Presentation Canonical, else the argument of complex number
-     * @param p - Presentation of complex number (Canincal, Polar, Exponent)
+     * @param x - Real part if Presentation CANONICAL, else absolute value (or modulus or magnitude)
+     * @param y - Imaginary part if Presentation CANONICAL, else the argument of complex number
+     * @param p - Presentation of complex number (CANONICAL, POLAR, EXPONENT)
      * @return New complex number
      */
     public static Complex CreateComplex(double x, double y, Presentation p) {
         switch (p) {
-            case Canonical:
+            case CANONICAL:
                 return fromCanonical(x, y);
-            case Polar:
+            case POLAR:
                 return fromPolar(x, y);
-            case Exponent:
+            case EXPONENT:
                 return fromExponent(x, y);
             default:
                 return new Complex();
@@ -257,11 +257,11 @@ public class Complex extends Number {
      */
     private double conversionAngle(AngleUnit angleUnit, double radians) {
         switch (angleUnit) {
-            case Degree:
+            case DEGREE:
                 return Math.toDegrees(radians);
-            case Radian:
+            case RADIAN:
                 return radians;
-            case Grad:
+            case GRAD:
                 return radians * (200d / Math.PI);
             default:
                 return Double.NaN;
