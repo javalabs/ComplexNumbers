@@ -8,9 +8,10 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private Parent root;
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        root = FXMLLoader.load(getClass().getResource("main.fxml"));
         primaryStage.setTitle("Representation of Complex number");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
@@ -19,4 +20,9 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public Parent getRoot() {
+        return root;
+    }
+
 }
